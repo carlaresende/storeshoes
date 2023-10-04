@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
 
+import { StatusBar } from 'expo-status-bar';
+import React, { useCallback } from 'react';
+
+import { useFonts, Anton_400Regular } from '@expo-google-fonts/anton';
+import * as SplashScreen from 'expo-splash-screen';
+import Routes from './src/router';
+import { Text, View } from 'react-native';
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+ let [fontsLoaded] = useFonts({
+  Anton_400Regular,
+  
+});
+
+
+const onLayoutRootView = useCallback(async () => {
+  if (fontsLoaded) {
+    await SplashScreen.hideAsync();
+  }
+}, [fontsLoaded]);
+
+if (!fontsLoaded) {
+  return null;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+  return (
+  
+  
+  <View style={{flex:1}} onLayout={onLayoutRootView}>
+
+<StatusBar style="light" backgroundColor="#000" translucent={false}/> 
+<Routes/>   
+</View>
+
+           
+  );
+}
